@@ -4,10 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-def eulerCalculus (h,func,hashmap,t):
+def eulerCalculus (h,func,hashmap,t):                   #function that calculates euler's formula
     return round((hashmap[round((t),5)]+h*func),5)
 
-def eulerAlgorithm(h,r,a,b,m,intervalEnd,hashmapP,hashmapD,funcp,funcd):
+def eulerAlgorithm(h,r,a,b,m,intervalEnd,hashmapP,hashmapD,funcp,funcd):   #function that runs euler's algorithm
     i=h
     while (i <=intervalEnd and (hashmapP[round((i-h),5)]> 0.005 or hashmapD[round((i-h),5)]> 0.005)):
         hashmapP[i] = eulerCalculus(h,funcp(r,a,(i-h),hashmapP,hashmapD),hashmapP,(i-h))
@@ -16,10 +16,10 @@ def eulerAlgorithm(h,r,a,b,m,intervalEnd,hashmapP,hashmapD,funcp,funcd):
     return
 
 
-def p(r,a,t,hashmapP,hashmapD):
+def p(r,a,t,hashmapP,hashmapD):                            #function that calculates preys evolution 
     return round((r*hashmapP[round(t,5)]-a*hashmapP[round((t),5)]*hashmapD[round((t),5)]),5)
 
-def d(b,m,t,hashmapP,hashmapD):
+def d(b,m,t,hashmapP,hashmapD):                            #function that calculates depredators
     return round((b*hashmapP[round((t),5)]*hashmapD[round((t),5)]-m*hashmapD[round((t),5)]),5)
 
 def main():
@@ -61,22 +61,23 @@ def main():
     if args.m:
         m=args.m
     
-    hashmapP = {intervalInit:intialValueP}
-    hashmapD = {intervalInit:intialValueD}
+    hashmapP = {intervalInit:intialValueP}          #hashmap que almacena los valores calculados de la funcion p
+    hashmapD = {intervalInit:intialValueD}          #hashmap que almacena los valores calculados de la funcion d
 
     eulerAlgorithm(h,r,a,b,m,intervalEnd,hashmapP,hashmapD,p,d)
     # Print values
     for clave in hashmapP:
         valor= hashmapP[clave]
-        print(str(clave)+" : "+str(valor))
-    for clave in hashmapD:
-        valor= hashmapD[clave]
-        print(str(clave)+" : "+str(valor))
+        print(str(clave)+" : "+str(valor))             #ciclo que imprime los valores del hashmap de p
+    for clave in hashmapD:                             #ciclo que imprime los valores del hashmap de d
+        valor= hashmapD[clave]              
+        print(str(clave)+" : "+str(valor))      
 
 
     fig ,(ax1, ax2) = plt.subplots(1,2)
-    # 1
-    ax1.plot(list(hashmapP.values()),'-',color='g', label='Preys')
+    
+    # 1                                                                        #setting graphic #1
+    ax1.plot(list(hashmapP.values()),'-',color='g', label='Preys')              
     ax1.plot(list(hashmapD.values()), '-', color= 'r', label='Depredators')
     ax1.set_title('Population through time')
     ax1.set_xlabel('Simulation time')
@@ -84,7 +85,7 @@ def main():
     ax1.legend()    
 
 
-    # 2
+    # 2                                                                         #setting graphic #2
     x=hashmapP.values()
     y=hashmapD.values()
     ax2.set_title('Interaction of the number of prey and predators')
